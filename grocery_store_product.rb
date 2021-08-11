@@ -1,28 +1,20 @@
 class GroceryStoreProduct
   
-  attr_accessor :product_name, :product_quantity, :product_price
+  attr_accessor :product_name, :product_quantity, :product_price_after_discount, :product_price_before_discount
   
   def initialize(product_name, product_quantity)
-    @product_name = product_name
-    @product_quantity = product_quantity
-    @product_price = calculate_product_price  
-  end
-
-  def calculate_product_price
     @products_details = {
       "milk" => {  
         "unit_price" => 3.97,
-        "sale_unit_price" => 2.50, 
-        "sale_on_quantity" => 2
+        "sale_unit_price" => 2.50
       },
       "bread" => { 
         "unit_price" => 2.17, 
         "sale_unit_price" => 2.0, 
-        "sale_on_quantity" => 3
       }, 
       "apple" => { 
         "unit_price" => 0.89
-      },"banana" => { 
+      },"banana" =>{ 
         "unit_price" => 0.99 
       }
     }
@@ -30,7 +22,7 @@ class GroceryStoreProduct
     @product_name = product_name
     @product_quantity = product_quantity
     @product_price_after_discount = calculate_product_price_after_discount
-    @product_price_before_discount = calculate_product_price_before_discount  
+    @product_price_before_discount = calculate_product_price_before_discount   
   end
 
   def calculate_product_price_after_discount
@@ -47,6 +39,22 @@ class GroceryStoreProduct
       return @products_details[@product_name]["unit_price"] * @product_quantity
     when "apple"
       return @products_details[@product_name]["unit_price"] * @product_quantity
+    end
+  end
+
+  def calculate_product_price_before_discount
+    return @products_details[@product_name]["unit_price"] * @product_quantity
+  end
+
+  def discount_calculator(product_unit_price, product_sale_unit_price, sale_on_quantity)
+    product_price_after_discount = 0 
+    if @product_quantity < sale_on_quantity
+      product_price_after_discount = product_unit_price * @product_quantity
+      return product_price_after_discount
+    end
+    if @product_quantity >= sale_on_quantity
+      product_price_after_discount = ((product_sale_unit_price * sale_on_quantity) * (@product_quantity / sale_on_quantity) ) + (product_unit_price * (@product_quantity % sale_on_quantity))
+      return product_price_after_discount
     end
   end
 
