@@ -7,7 +7,7 @@ $product_purchase = []
 $table_data = []
 
 def products
-  puts "Please enter all the products purchased separated by a comma"
+  puts "Please enter all the items purchased separated by a comma"
   product_purchase = gets.chomp.split(',')
   
   create_product "milk", product_purchase if product_purchase.include?('milk')
@@ -30,3 +30,11 @@ def display_bill_table
   puts table
   generate_receipt
 end
+
+def generate_receipt
+  amount_saved = ($all_prices_before_discount.sum - $all_prices_after_discount.sum).round(2)
+  puts"\n Total price: $#{ $all_prices_after_discount.sum.round(2)} \n You saved $#{amount_saved} today."
+end
+
+# products
+#milk,milk,bread,banana,bread,bread,bread,milk,apple
